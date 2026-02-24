@@ -1,0 +1,15 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Plus Jakarta Sans", sans-serif;
+}
+
+body {
+  @apply antialiased;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  @apply opacity-0 absolute inset-0 w-full h-full cursor-pointer;
+}
