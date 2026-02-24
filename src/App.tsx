@@ -20,13 +20,15 @@ import {
   UserCircle
 } from 'lucide-react';
 
-type Step = 1 | 2 | 3 | 4 | 5;
+type Step = 1 | 2 | 3 | 4 | 5 | 6;
 
 interface TriageData {
   name: string;
   hairLength: string;
   materialChoice: string;
+  braidName: string;
   date: string;
+  time: string;
   observations: string;
 }
 
@@ -36,11 +38,13 @@ export default function App() {
     name: '',
     hairLength: 'Curto',
     materialChoice: 'Já tenho o material',
+    braidName: '',
     date: '',
+    time: '',
     observations: '',
   });
 
-  const nextStep = () => setStep((prev) => (prev < 5 ? (prev + 1) as Step : prev));
+  const nextStep = () => setStep((prev) => (prev < 6 ? (prev + 1) as Step : prev));
   const prevStep = () => setStep((prev) => (prev > 1 ? (prev - 1) as Step : prev));
   const reset = () => {
     setStep(1);
@@ -48,23 +52,25 @@ export default function App() {
       name: '',
       hairLength: 'Curto',
       materialChoice: 'Já tenho o material',
+      braidName: '',
       date: '',
+      time: '',
       observations: '',
     });
   };
 
   const handleWhatsApp = () => {
-    const message = `Olá! Gostaria de agendar um atendimento.\n\n*Resumo da Triagem:*\n- Nome: ${data.name}\n- Comprimento: ${data.hairLength}\n- Material: ${data.materialChoice}\n- Data: ${data.date}\n- Observações: ${data.observations}`;
+    const message = `Olá! Gostaria de agendar um atendimento.\n\n*Resumo da Triagem:*\n- Nome: ${data.name}\n- Comprimento: ${data.hairLength}\n- Material: ${data.materialChoice}\n- Trança: ${data.braidName}\n- Data: ${data.date}\n- Horário: ${data.time}\n- Observações: ${data.observations}`;
     const encoded = encodeURIComponent(message);
     window.open(`https://wa.me/?text=${encoded}`, '_blank');
   };
 
-  const progress = (step / 4) * 100;
+  const progress = (step / 5) * 100;
 
   return (
     <div className="min-h-screen bg-[#f6f6f8] text-slate-900 font-sans flex flex-col items-center">
       <div className="w-full max-w-md bg-white shadow-sm sticky top-0 z-10">
-        {step < 5 && (
+        {step < 6 && (
           <>
             <div className="flex items-center justify-between px-4 py-4">
               <button 
@@ -74,7 +80,7 @@ export default function App() {
               >
                 <ChevronLeft className="w-6 h-6 text-slate-600" />
               </button>
-              <span className="text-sm font-semibold text-slate-500">Etapa {step} de 4</span>
+              <span className="text-sm font-semibold text-slate-500">Etapa {step} de 5</span>
               <div className="w-10"></div>
             </div>
             <div className="w-full h-1 bg-slate-100">
@@ -258,6 +264,48 @@ export default function App() {
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -20 }}
+              className="flex flex-col items-center"
+            >
+              <div className="w-full bg-white rounded-2xl shadow-xl shadow-indigo-500/5 p-8 flex flex-col items-center border border-slate-100">
+                <div className="w-16 h-16 bg-indigo-50 rounded-2xl flex items-center justify-center mb-6">
+                  <Scissors className="w-8 h-8 text-indigo-600" />
+                </div>
+                <div className="text-center mb-8">
+                  <h1 className="text-2xl font-bold text-slate-900 mb-2">Qual o nome da trança?</h1>
+                  <p className="text-slate-500 font-medium">Qual modelo você deseja fazer?</p>
+                </div>
+                <div className="w-full space-y-4">
+                  <input
+                    type="text"
+                    value={data.braidName}
+                    onChange={(e) => setData({ ...data, braidName: e.target.value })}
+                    placeholder="Ex: Box Braids, Nagô, etc."
+                    className="w-full px-5 py-4 bg-slate-50 border-2 border-transparent rounded-xl focus:border-indigo-600 focus:bg-white transition-all outline-none text-slate-900 text-lg font-medium"
+                  />
+                  <div className="flex items-center gap-4 mt-4">
+                    <button onClick={prevStep} className="px-6 py-4 text-slate-500 font-bold hover:text-slate-900 transition-colors">
+                      Voltar
+                    </button>
+                    <button
+                      onClick={nextStep}
+                      disabled={!data.braidName}
+                      className="flex-1 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white font-bold py-4 px-6 rounded-xl flex items-center justify-center gap-2 transition-all active:scale-[0.98] shadow-lg shadow-indigo-600/20"
+                    >
+                      <span>Próximo</span>
+                      <ArrowRight className="w-5 h-5" />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          )}
+
+          {step === 5 && (
+            <motion.div
+              key="step5"
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
               className="space-y-6"
             >
               <div className="flex items-center gap-3 mb-2">
@@ -268,19 +316,32 @@ export default function App() {
               </div>
               <h2 className="text-2xl font-bold">Quase lá!</h2>
               <p className="text-slate-600 leading-relaxed">
-                Escolha sua data preferida e adicione qualquer detalhe importante para o seu atendimento.
+                Escolha sua data e horário preferidos e adicione qualquer detalhe importante para o seu atendimento.
               </p>
 
               <div className="space-y-6">
-                <div className="flex flex-col gap-2">
-                  <label className="text-sm font-bold text-slate-700 ml-1">Pretensão de Data</label>
-                  <div className="relative">
-                    <input
-                      type="date"
-                      value={data.date}
-                      onChange={(e) => setData({ ...data, date: e.target.value })}
-                      className="w-full h-14 bg-slate-50 border border-slate-200 rounded-xl px-4 text-slate-900 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition-all"
-                    />
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="flex flex-col gap-2">
+                    <label className="text-sm font-bold text-slate-700 ml-1">Pretensão de Data</label>
+                    <div className="relative">
+                      <input
+                        type="date"
+                        value={data.date}
+                        onChange={(e) => setData({ ...data, date: e.target.value })}
+                        className="w-full h-14 bg-slate-50 border border-slate-200 rounded-xl px-4 text-slate-900 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition-all"
+                      />
+                    </div>
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <label className="text-sm font-bold text-slate-700 ml-1">Horário</label>
+                    <div className="relative">
+                      <input
+                        type="time"
+                        value={data.time}
+                        onChange={(e) => setData({ ...data, time: e.target.value })}
+                        className="w-full h-14 bg-slate-50 border border-slate-200 rounded-xl px-4 text-slate-900 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition-all"
+                      />
+                    </div>
                   </div>
                 </div>
 
@@ -299,7 +360,7 @@ export default function App() {
               <div className="p-4 bg-emerald-50 rounded-xl border border-emerald-100 flex gap-3">
                 <div className="w-5 h-5 rounded-full bg-emerald-500 flex items-center justify-center text-white text-[10px] font-bold mt-0.5">i</div>
                 <p className="text-xs text-slate-600 leading-normal">
-                  Lembre-se: a data selecionada está sujeita a confirmação de disponibilidade na agenda da profissional.
+                  Lembre-se: a data e horário selecionados estão sujeitos a confirmação de disponibilidade na agenda da profissional.
                 </p>
               </div>
 
@@ -318,9 +379,9 @@ export default function App() {
             </motion.div>
           )}
 
-          {step === 5 && (
+          {step === 6 && (
             <motion.div
-              key="step5"
+              key="step6"
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               className="flex flex-col items-center"
@@ -348,9 +409,15 @@ export default function App() {
                   </div>
                 </div>
                 <div className="p-6 space-y-5">
-                  <div className="flex flex-col gap-1">
-                    <span className="text-xs font-bold uppercase tracking-wider text-slate-400">Nome do Cliente</span>
-                    <span className="text-slate-900 font-semibold">{data.name}</span>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="flex flex-col gap-1">
+                      <span className="text-xs font-bold uppercase tracking-wider text-slate-400">Nome do Cliente</span>
+                      <span className="text-slate-900 font-semibold">{data.name}</span>
+                    </div>
+                    <div className="flex flex-col gap-1">
+                      <span className="text-xs font-bold uppercase tracking-wider text-slate-400">Trança</span>
+                      <span className="text-slate-900 font-semibold">{data.braidName}</span>
+                    </div>
                   </div>
                   <div className="grid grid-cols-2 gap-4">
                     <div className="flex flex-col gap-1">
@@ -363,10 +430,10 @@ export default function App() {
                     </div>
                   </div>
                   <div className="flex flex-col gap-1 pt-3 border-t border-slate-100">
-                    <span className="text-xs font-bold uppercase tracking-wider text-slate-400">Previsão de Data</span>
+                    <span className="text-xs font-bold uppercase tracking-wider text-slate-400">Previsão de Data e Hora</span>
                     <div className="flex items-center gap-2 text-slate-900 font-semibold">
                       <Calendar className="w-4 h-4 text-emerald-500" />
-                      <span>{data.date || 'Não informada'}</span>
+                      <span>{data.date || 'Não informada'} às {data.time || '--:--'}</span>
                     </div>
                   </div>
                   {data.observations && (
