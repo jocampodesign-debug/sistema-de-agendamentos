@@ -26,7 +26,7 @@ interface TriageData {
   name: string;
   hairLength: string;
   materialChoice: string;
-  braidName: string;
+  tranca: string;
   date: string;
   time: string;
   observations: string;
@@ -38,7 +38,7 @@ export default function App() {
     name: '',
     hairLength: 'Curto',
     materialChoice: 'Já tenho o material',
-    braidName: '',
+    tranca: '',
     date: '',
     time: '',
     observations: '',
@@ -52,7 +52,7 @@ export default function App() {
       name: '',
       hairLength: 'Curto',
       materialChoice: 'Já tenho o material',
-      braidName: '',
+      tranca: '',
       date: '',
       time: '',
       observations: '',
@@ -60,7 +60,7 @@ export default function App() {
   };
 
   const handleWhatsApp = () => {
-    const message = `Olá! Gostaria de agendar um atendimento.\n\n*Resumo da Triagem:*\n- Nome: ${data.name}\n- Comprimento: ${data.hairLength}\n- Material: ${data.materialChoice}\n- Trança: ${data.braidName}\n- Data: ${data.date}\n- Horário: ${data.time}\n- Observações: ${data.observations}`;
+    const message = `Olá! Gostaria de agendar um atendimento.\n\n*Resumo da Triagem:*\n- Nome: ${data.name}\n- Comprimento: ${data.hairLength}\n- Material: ${data.materialChoice}\n- Trança: ${data.tranca}\n- Data: ${data.date}\n- Horário: ${data.time}\n- Observações: ${data.observations}`;
     const encoded = encodeURIComponent(message);
     window.open(`https://wa.me/?text=${encoded}`, '_blank');
   };
@@ -277,8 +277,8 @@ export default function App() {
                 <div className="w-full space-y-4">
                   <input
                     type="text"
-                    value={data.braidName}
-                    onChange={(e) => setData({ ...data, braidName: e.target.value })}
+                    value={data.tranca}
+                    onChange={(e) => setData({ ...data, tranca: e.target.value })}
                     placeholder="Ex: Box Braids, Nagô, etc."
                     className="w-full px-5 py-4 bg-slate-50 border-2 border-transparent rounded-xl focus:border-indigo-600 focus:bg-white transition-all outline-none text-slate-900 text-lg font-medium"
                   />
@@ -288,7 +288,7 @@ export default function App() {
                     </button>
                     <button
                       onClick={nextStep}
-                      disabled={!data.braidName}
+                      disabled={!data.tranca}
                       className="flex-1 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white font-bold py-4 px-6 rounded-xl flex items-center justify-center gap-2 transition-all active:scale-[0.98] shadow-lg shadow-indigo-600/20"
                     >
                       <span>Próximo</span>
@@ -416,7 +416,7 @@ export default function App() {
                     </div>
                     <div className="flex flex-col gap-1">
                       <span className="text-xs font-bold uppercase tracking-wider text-slate-400">Trança</span>
-                      <span className="text-slate-900 font-semibold">{data.braidName}</span>
+                      <span className="text-slate-900 font-semibold">{data.tranca}</span>
                     </div>
                   </div>
                   <div className="grid grid-cols-2 gap-4">
