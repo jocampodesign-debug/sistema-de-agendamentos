@@ -60,7 +60,7 @@ export default function App() {
   };
 
   const handleWhatsApp = () => {
-    const message = `Olá! Gostaria de agendar um atendimento.\n\n*Resumo da Triagem:*\n- Nome: ${data.name}\n- Comprimento: ${data.hairLength}\n- Material: ${data.materialChoice}\n- Trança: ${data.tranca}\n- Data: ${data.date}\n- Horário: ${data.time}\n- Observações: ${data.observations}`;
+    const message = `Olá! Gostaria de agendar um atendimento.\n\n*Resumo da Triagem:*\n- Nome: ${data.name}\n- Comprimento: ${data.hairLength}\n- Material: ${data.materialChoice}\n- Modelo: ${data.tranca}\n- Data: ${data.date}\n- Horário: ${data.time}\n- Observações: ${data.observations}`;
     const encoded = encodeURIComponent(message);
     window.open(`https://wa.me/?text=${encoded}`, '_blank');
   };
@@ -271,7 +271,7 @@ export default function App() {
                   <Scissors className="w-8 h-8 text-indigo-600" />
                 </div>
                 <div className="text-center mb-8">
-                  <h1 className="text-2xl font-bold text-slate-900 mb-2">Qual o nome da trança?</h1>
+                  <h1 className="text-2xl font-bold text-slate-900 mb-2">Qual o nome da <span translate="no" className="notranslate">trança</span>?</h1>
                   <p className="text-slate-500 font-medium">Qual modelo você deseja fazer?</p>
                 </div>
                 <div className="w-full space-y-4">
@@ -415,7 +415,7 @@ export default function App() {
                       <span className="text-slate-900 font-semibold">{data.name}</span>
                     </div>
                     <div className="flex flex-col gap-1">
-                      <span className="text-xs font-bold uppercase tracking-wider text-slate-400">Trança</span>
+                      <span className="text-xs font-bold uppercase tracking-wider text-slate-400"><span translate="no" className="notranslate">Trança</span></span>
                       <span className="text-slate-900 font-semibold">{data.tranca}</span>
                     </div>
                   </div>
